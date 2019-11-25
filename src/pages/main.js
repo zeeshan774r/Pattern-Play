@@ -116,7 +116,6 @@ class PatternPlay extends Component {
 
     render(){
         let {level, errorClick, userWon, requestInput, randomArray} = this.state
-        console.log(randomArray)
         return(
             <MianWrapper>
                 {requestInput? <ErrorText>Please select the boxes</ErrorText> : null }
