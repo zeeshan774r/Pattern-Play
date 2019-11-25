@@ -38,7 +38,7 @@ class PatternPlay extends Component {
         this.state = {
             level: 1,
             randomArray: [],
-            count: 2,
+            count: 1,
             highlight: null,
             errorClick: false,
             userWon: false,
@@ -55,8 +55,9 @@ class PatternPlay extends Component {
         }, ()=>{
             setTimeout(()=>{if(arr.length<=index+1){
                 this.setState({
-                    highlight: null
+                    highlight: null,
                 })
+                setTimeout(()=>this.requestUserInput(arr.length), 5000)
             }
             else{
                 this.hilightLoop(arr, index+1)
@@ -76,7 +77,7 @@ class PatternPlay extends Component {
             this.setState({randomArray: modifiedArray}, ()=>{
                 if(this.state.level === 10 && this.state.randomArray.length ===0){
                     this.setState({
-                        userWon: true, level: 1, randomArray: [], count: 2,requestInput: false
+                        userWon: true, level: 1, randomArray: [], count: 1,requestInput: false
                         
                     })
                 }
@@ -87,7 +88,7 @@ class PatternPlay extends Component {
         }
         else{
             this.setState({
-                count: 2, level : 1, randomArray: [], highlight: null, errorClick: true,requestInput: false
+                count: 1, level : 1, randomArray: [], highlight: null, errorClick: true,requestInput: false
             })
         }
     }
@@ -110,11 +111,12 @@ class PatternPlay extends Component {
             }
         }
         this.setState({randomArray: arr,errorClick: false, userWon: false}, this.playAnimate) 
-        setTimeout(()=>this.requestUserInput(arr.length), 5000)
+        
     }
 
     render(){
         let {level, errorClick, userWon, requestInput, randomArray} = this.state
+        console.log(randomArray)
         return(
             <MianWrapper>
                 {requestInput? <ErrorText>Please select the boxes</ErrorText> : null }
