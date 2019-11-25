@@ -41,7 +41,8 @@ class PatternPlay extends Component {
             count: 2,
             highlight: null,
             errorClick: false,
-            userWon: false
+            userWon: false,
+            requestInput:false
         }
     }
     playAnimate=()=>{
@@ -75,21 +76,27 @@ class PatternPlay extends Component {
             this.setState({randomArray: modifiedArray}, ()=>{
                 if(this.state.level === 10 && this.state.randomArray.length ===0){
                     this.setState({
-                        userWon: true, level: 1, randomArray: [], count: 2
+                        userWon: true, level: 1, randomArray: [], count: 2,requestInput: false
+                        
                     })
                 }
                 else if(this.state.randomArray.length===0){
-                    this.setState({count: this.state.count+1, level: this.state.level+1})
+                    this.setState({count: this.state.count+1, level: this.state.level+1,requestInput: false})
                 }
             })
         }
         else{
             this.setState({
-                count: 2, level : 1, randomArray: [], highlight: null, errorClick: true
+                count: 2, level : 1, randomArray: [], highlight: null, errorClick: true,requestInput: false
             })
         }
     }
 
+    requestUserInput=(len)=>{
+        if(len == this.state.randomArray.length){
+            this.setState({requestInput: true}) 
+        }
+    }
     generatePattern = () => {
         const {count}=this.state
         let arr =[]
@@ -103,12 +110,14 @@ class PatternPlay extends Component {
             }
         }
         this.setState({randomArray: arr,errorClick: false, userWon: false}, this.playAnimate) 
+        setTimeout(()=>this.requestUserInput(arr.length), 5000)
     }
 
     render(){
-        let {level, errorClick, userWon} = this.state
+        let {level, errorClick, userWon, requestInput, randomArray} = this.state
         return(
             <MianWrapper>
+                {requestInput? <ErrorText>Please select the boxes</ErrorText> : null }
                 { errorClick ? <ErrorText>You have clicked the wrong pattern</ErrorText> : null }
                 { userWon ? <WonText>You have won</WonText> : null }
                 {level > 1 ? <WonText>{`You have successfully completed level ${level-1}`}</WonText> : null}
@@ -119,6 +128,7 @@ class PatternPlay extends Component {
                     <SquareBox key={index} highlighted={this.state.highlight===index} color={el} onClick={()=>this.onClickBoxes(index)}></SquareBox>
                 ))}
                 </SquareBoxWrapper>
+                {randomArray.length>0 && <div>Please Select {randomArray.length} boxes</div>}
                 <Button onClick={this.generatePattern}>play</Button>
             </Wrapper>
             </MianWrapper>
