@@ -10,7 +10,7 @@ const Title = styled.h1`
 function App() {
   return (
     <div className="App">
-      <Title>Pttaern Repeating Game</Title>
+      <Title>Pattern Repeating Game</Title>
       <PatternPlay></PatternPlay>
     </div>
   );
